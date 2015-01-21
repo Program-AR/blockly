@@ -343,7 +343,7 @@ Blockly.Blocks['procedures_defreturn'] = {
     this.setMutator(new Blockly.Mutator(['procedures_mutatorarg']));
     this.setTooltip(Blockly.Msg.PROCEDURES_DEFRETURN_TOOLTIP);
     this.arguments_ = [];
-    this.setStatements_(true);
+    this.setStatements_(false);
     this.statementConnection_ = null;
   },
   setStatements_: Blockly.Blocks['procedures_defnoreturn'].setStatements_,
