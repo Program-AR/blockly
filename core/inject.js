@@ -97,6 +97,7 @@ Blockly.parseOptions_ = function(options) {
     var hasComments = false;
     var hasDisable = false;
     var hasDuplicate = false;
+    var hasTrashOnlyDelete = false;
     var tree = null;
   } else {
     var tree = Blockly.parseToolboxTree_(options['toolbox']);
@@ -118,6 +119,10 @@ Blockly.parseOptions_ = function(options) {
     if (hasDisable === undefined) {
       hasDisable = hasCategories;
     }
+    var hasTrashOnlyDelete = options['trashOnlyDelete'];
+    if (hasTrashOnlyDelete === undefined) {
+      hasTrashOnlyDelete = hasCategories;
+    }
   }
   var hasScrollbars = options['scrollbars'];
   if (hasScrollbars === undefined) {
@@ -135,6 +140,7 @@ Blockly.parseOptions_ = function(options) {
   Blockly.comments = hasComments;
   Blockly.disable = hasDisable;
   Blockly.duplicate = options['duplicate'] || false;
+  Blockly.trashOnlyDelete = hasTrashOnlyDelete;
   Blockly.readOnly = readOnly;
   Blockly.maxBlocks = options['maxBlocks'] || Infinity;
   if (options['media']) {

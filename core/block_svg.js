@@ -531,23 +531,25 @@ Blockly.BlockSvg.prototype.showContextMenu_ = function(e) {
       options.push(disableOption);
     }
 
-    // Option to delete this block.
-    // Count the number of blocks that are nested in this block.
-    var descendantCount = this.getDescendants().length;
-    var nextBlock = this.getNextBlock();
-    if (nextBlock) {
-      // Blocks in the current stack would survive this block's deletion.
-      descendantCount -= nextBlock.getDescendants().length;
-    }
-    var deleteOption = {
-      text: descendantCount == 1 ? Blockly.Msg.DELETE_BLOCK :
-          Blockly.Msg.DELETE_X_BLOCKS.replace('%1', String(descendantCount)),
-      enabled: true,
-      callback: function() {
-        block.dispose(true, true);
+    if(!Blockly.trashOnlyDelete) {
+      // Option to delete this block.
+      // Count the number of blocks that are nested in this block.
+      var descendantCount = this.getDescendants().length;
+      var nextBlock = this.getNextBlock();
+      if (nextBlock) {
+        // Blocks in the current stack would survive this block's deletion.
+        descendantCount -= nextBlock.getDescendants().length;
       }
-    };
-    options.push(deleteOption);
+      var deleteOption = {
+        text: descendantCount == 1 ? Blockly.Msg.DELETE_BLOCK :
+            Blockly.Msg.DELETE_X_BLOCKS.replace('%1', String(descendantCount)),
+        enabled: true,
+        callback: function() {
+          block.dispose(true, true);
+        }
+      };
+      options.push(deleteOption);      
+    }
   }
 
   // Option to get help.
