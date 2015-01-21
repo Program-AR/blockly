@@ -481,20 +481,22 @@ Blockly.BlockSvg.prototype.showContextMenu_ = function(e) {
       }
       options.push(commentOption);
     }
-
-    // Option to make block inline.
-    if (!this.collapsed_) {
-      for (var i = 0; i < this.inputList.length; i++) {
-        if (this.inputList[i].type == Blockly.INPUT_VALUE) {
-          // Only display this option if there is a value input on the block.
-          var inlineOption = {enabled: true};
-          inlineOption.text = this.inputsInline ? Blockly.Msg.EXTERNAL_INPUTS :
-                                                  Blockly.Msg.INLINE_INPUTS;
-          inlineOption.callback = function() {
-            block.setInputsInline(!block.inputsInline);
-          };
-          options.push(inlineOption);
-          break;
+    
+    if(Blockly.externalInputs) {
+      // Option to make block inline.
+      if (!this.collapsed_) {
+        for (var i = 0; i < this.inputList.length; i++) {
+          if (this.inputList[i].type == Blockly.INPUT_VALUE) {
+            // Only display this option if there is a value input on the block.
+            var inlineOption = {enabled: true};
+            inlineOption.text = this.inputsInline ? Blockly.Msg.EXTERNAL_INPUTS :
+                                                    Blockly.Msg.INLINE_INPUTS;
+            inlineOption.callback = function() {
+              block.setInputsInline(!block.inputsInline);
+            };
+            options.push(inlineOption);
+            break;
+          }
         }
       }
     }
@@ -551,15 +553,17 @@ Blockly.BlockSvg.prototype.showContextMenu_ = function(e) {
       options.push(deleteOption);      
     }
   }
-
-  // Option to get help.
-  var url = goog.isFunction(this.helpUrl) ? this.helpUrl() : this.helpUrl;
-  var helpOption = {enabled: !!url};
-  helpOption.text = Blockly.Msg.HELP;
-  helpOption.callback = function() {
-    block.showHelp_();
-  };
-  options.push(helpOption);
+  
+  if(Blockly.viewHelp) {
+    // Option to get help.
+    var url = goog.isFunction(this.helpUrl) ? this.helpUrl() : this.helpUrl;
+    var helpOption = {enabled: !!url};
+    helpOption.text = Blockly.Msg.HELP;
+    helpOption.callback = function() {
+      block.showHelp_();
+    };
+    options.push(helpOption);
+  }
 
   // Allow the block to add or modify options.
   if (this.customContextMenu && !block.isInFlyout) {
