@@ -96,6 +96,7 @@ Blockly.parseOptions_ = function(options) {
     var hasCollapse = false;
     var hasComments = false;
     var hasDisable = false;
+    var hasDuplicate = false;
     var tree = null;
   } else {
     var tree = Blockly.parseToolboxTree_(options['toolbox']);
@@ -133,6 +134,7 @@ Blockly.parseOptions_ = function(options) {
   Blockly.collapse = hasCollapse;
   Blockly.comments = hasComments;
   Blockly.disable = hasDisable;
+  Blockly.duplicate = options['duplicate'] || false;
   Blockly.readOnly = readOnly;
   Blockly.maxBlocks = options['maxBlocks'] || Infinity;
   if (options['media']) {

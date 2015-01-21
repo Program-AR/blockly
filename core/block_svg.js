@@ -449,18 +449,21 @@ Blockly.BlockSvg.prototype.showContextMenu_ = function(e) {
   var options = [];
 
   if (this.isDeletable() && this.isMovable() && !block.isInFlyout) {
-    // Option to duplicate this block.
-    var duplicateOption = {
-      text: Blockly.Msg.DUPLICATE_BLOCK,
-      enabled: true,
-      callback: function() {
-        block.duplicate_();
+    
+    if(Blockly.duplicate) {
+      // Option to duplicate this block.
+      var duplicateOption = {
+        text: Blockly.Msg.DUPLICATE_BLOCK,
+        enabled: true,
+        callback: function() {
+          block.duplicate_();
+        }
+      };
+      if (this.getDescendants().length > this.workspace.remainingCapacity()) {
+        duplicateOption.enabled = false;
       }
-    };
-    if (this.getDescendants().length > this.workspace.remainingCapacity()) {
-      duplicateOption.enabled = false;
+      options.push(duplicateOption);
     }
-    options.push(duplicateOption);
 
     if (this.isEditable() && !this.collapsed_ && Blockly.comments) {
       // Option to add/remove a comment.
