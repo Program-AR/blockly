@@ -143,6 +143,8 @@ Blockly.parseOptions_ = function(options) {
   Blockly.externalInputs = options['externalInputs'] || false;
   Blockly.viewHelp = options['viewHelp'] || false;
   Blockly.trashOnlyDelete = hasTrashOnlyDelete;
+  Blockly.defsOnly = options['defsOnly'] || false;
+  Blockly.defsNames = options['defsNames'];
   Blockly.readOnly = readOnly;
   Blockly.maxBlocks = options['maxBlocks'] || Infinity;
   if (options['media']) {

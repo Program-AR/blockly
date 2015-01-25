@@ -97,6 +97,33 @@ Blockly.Workspace.prototype.removeTopBlock = function(block) {
 };
 
 /**
+ * Helper function to check if a block type is in the defsNames list
+ * @param {Blockly.Block=} block to ask.
+ * @return {boolean}.
+ */
+Blockly.Workspace.prototype.isADef = function(block) {
+  for(var i=0; i < Blockly.defsNames.length; i++) {
+    if(Blockly.defsNames[i] === block.type){
+      return true;
+    }
+  }
+  return false;
+};
+
+/**
+ * Finds the blocks to generate code.
+ * @param {boolean} ordered Sort the list if true.
+ * @return {!Array.<!Blockly.Block>} The blocks to output.
+ */
+Blockly.Workspace.prototype.getBlocksToOutput = function(ordered) {
+  var blocks = [].concat(this.getTopBlocks(ordered));
+  if(Blockly.defsOnly) {
+    blocks = blocks.filter(this.isADef);
+  }
+  return blocks;
+}
+
+/**
  * Finds the top-level blocks and returns them.  Blocks are optionally sorted
  * by position; top to bottom (with slight LTR or RTL bias).
  * @param {boolean} ordered Sort the list if true.
