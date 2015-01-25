@@ -132,6 +132,10 @@ Blockly.parseOptions_ = function(options) {
   if (hasSounds === undefined) {
     hasSounds = true;
   }
+  var hasCss = options['css'];
+  if (hasCss === undefined) {
+    hasCss = true;
+  }
   var enableRealtime = !!options['realtime'];
   var realtimeOptions = enableRealtime ? options['realtimeOptions'] : undefined;
 
@@ -157,6 +161,7 @@ Blockly.parseOptions_ = function(options) {
   Blockly.hasScrollbars = hasScrollbars;
   Blockly.hasTrashcan = hasTrashcan;
   Blockly.hasSounds = hasSounds;
+  Blockly.hasCss = hasCss;
   Blockly.languageTree = tree;
   Blockly.enableRealtime = enableRealtime;
   Blockly.realtimeOptions = realtimeOptions;
