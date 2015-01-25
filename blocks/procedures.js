@@ -251,7 +251,9 @@ Blockly.Blocks['procedures_defnoreturn'] = {
    * @this Blockly.Block
    */
   getVars: function() {
-    return this.arguments_;
+    return [];
+    // Old: return arguments like they are vars
+//    return this.arguments_;
   },
   /**
    * Notification that a variable is renaming.
@@ -313,7 +315,7 @@ Blockly.Blocks['procedures_defnoreturn'] = {
         var xmlField = goog.dom.createDom('field', null, name);
         xmlField.setAttribute('name', 'VAR');
         var xmlBlock = goog.dom.createDom('block', null, xmlField);
-        xmlBlock.setAttribute('type', 'variables_get');
+        xmlBlock.setAttribute('type', 'param_get');
         option.callback = Blockly.ContextMenu.callbackFactory(this, xmlBlock);
         options.push(option);
       }
@@ -730,6 +732,45 @@ Blockly.Blocks['procedures_ifreturn'] = {
       this.setWarningText(null);
     } else {
       this.setWarningText(Blockly.Msg.PROCEDURES_IFRETURN_WARNING);
+    }
+  }
+};
+
+Blockly.Blocks['param_get'] = {
+  /**
+   * Block for parameter getter.
+   * @this Blockly.Block
+   */
+  init: function() {
+    // TODO: set helpurl
+    // this.setHelpUrl(Blockly.Msg.PARAM_GET_HELPURL);
+    this.setColour(290);
+    this.appendDummyInput()
+        .appendField('null', 'VAR')
+    this.setOutput(true);
+    // TODO: set tooltip
+    // this.setTooltip(Blockly.Msg.PARAM_GET_TOOLTIP);
+  },
+  /**
+   * Return all variables referenced by this block.
+   * @return {!Array.<string>} List of variable names.
+   * @this Blockly.Block
+   */
+  getVars: function() {
+    return [];
+    // From variables, the param was a var
+//    return [this.getFieldValue('VAR')];
+  },
+  /**
+   * Notification that a parameter is renaming.
+   * If the name matches one of this block's params, rename it.
+   * @param {string} oldName Previous name of param.
+   * @param {string} newName Renamed param.
+   * @this Blockly.Block
+   */
+  renameVar: function(oldName, newName) {
+    if (Blockly.Names.equals(oldName, this.getFieldValue('VAR'))) {
+      this.setFieldValue(newName, 'VAR');
     }
   }
 };

@@ -121,3 +121,10 @@ Blockly.Python['procedures_ifreturn'] = function(block) {
   }
   return code;
 };
+
+Blockly.Python['param_get'] = function(block) {
+  // Variable getter.
+  var code = Blockly.Python.variableDB_.getName(block.getFieldValue('VAR'),
+      Blockly.Variables.NAME_TYPE);
+  return [code, Blockly.Python.ORDER_ATOMIC];
+};

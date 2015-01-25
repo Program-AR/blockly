@@ -106,3 +106,10 @@ Blockly.Dart['procedures_ifreturn'] = function(block) {
   code += '}\n';
   return code;
 };
+
+Blockly.Dart['param_get'] = function(block) {
+  // Variable getter.
+  var code = Blockly.Dart.variableDB_.getName(block.getFieldValue('VAR'),
+      Blockly.Variables.NAME_TYPE);
+  return [code, Blockly.Dart.ORDER_ATOMIC];
+};

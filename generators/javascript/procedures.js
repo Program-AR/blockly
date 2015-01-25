@@ -106,3 +106,10 @@ Blockly.JavaScript['procedures_ifreturn'] = function(block) {
   code += '}\n';
   return code;
 };
+
+Blockly.JavaScript['param_get'] = function(block) {
+  // Variable getter.
+  var code = Blockly.JavaScript.variableDB_.getName(block.getFieldValue('VAR'),
+      Blockly.Variables.NAME_TYPE);
+  return [code, Blockly.JavaScript.ORDER_ATOMIC];
+};
