@@ -284,6 +284,7 @@ Blockly.Blocks['procedures_defnoreturn'] = {
       }
     }
   },
+  
   /**
    * Add custom menu options to this block's context menu.
    * @param {!Array} options List of menu options to add to.
@@ -311,7 +312,7 @@ Blockly.Blocks['procedures_defnoreturn'] = {
       for (var i = 0; i < this.arguments_.length; i++) {
         var option = {enabled: true};
         var name = this.arguments_[i];
-        option.text = Blockly.Msg.VARIABLES_SET_CREATE_GET.replace('%1', name);
+        option.text = this.getParameterSvg(name) // Blockly.Msg.VARIABLES_SET_CREATE_GET.replace('%1', name);
         var xmlField = goog.dom.createDom('field', null, name);
         xmlField.setAttribute('name', 'VAR');
         var xmlBlock = goog.dom.createDom('block', null, xmlField);
@@ -321,6 +322,40 @@ Blockly.Blocks['procedures_defnoreturn'] = {
       }
     }
   },
+
+  /**
+   * Get the svg representation of a parameter
+   * @name {!string} name of the parameter.
+   * @this Blockly.Block
+   */
+  getParameterSvg: function(name) {
+    
+    var newBlock = new Blockly.Block.obtain(this.workspace, 'param_get');
+    newBlock.setFieldValue(name, 'VAR');
+    newBlock.initSvg();
+    newBlock.render();
+    newBlock.moveBy(10,5);
+    
+    // SVG that contains the svg paramater block
+    var svg = Blockly.createSvgElement('svg', {
+      'width': newBlock.width-100,
+      'height': newBlock.height
+    });
+    
+    var blockSvg = newBlock.getSvgRoot();
+    
+    svg.appendChild(blockSvg);
+    
+    // to remove all the listeners
+    var clonedBlockSvg = blockSvg.cloneNode(true); 
+    blockSvg.parentNode.replaceChild(clonedBlockSvg, blockSvg);
+    
+    // remove the block from top blocks
+    this.workspace.removeTopBlock(newBlock);
+    
+    return svg;
+  },
+  
   callType_: 'procedures_callnoreturn'
 };
 
