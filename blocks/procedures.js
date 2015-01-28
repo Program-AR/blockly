@@ -338,8 +338,8 @@ Blockly.Blocks['procedures_defnoreturn'] = {
     
     // SVG that contains the svg paramater block
     var svg = Blockly.createSvgElement('svg', {
-      'width': newBlock.width-100,
-      'height': newBlock.height
+      'width': newBlock.width+10,
+      'height': newBlock.height+5
     });
     
     var blockSvg = newBlock.getSvgRoot();
