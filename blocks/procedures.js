@@ -404,6 +404,7 @@ Blockly.Blocks['procedures_defreturn'] = {
   getVars: Blockly.Blocks['procedures_defnoreturn'].getVars,
   renameVar: Blockly.Blocks['procedures_defnoreturn'].renameVar,
   customContextMenu: Blockly.Blocks['procedures_defnoreturn'].customContextMenu,
+  getParameterSvg: Blockly.Blocks['procedures_defnoreturn'].getParameterSvg,
   callType_: 'procedures_callreturn'
 };
 
