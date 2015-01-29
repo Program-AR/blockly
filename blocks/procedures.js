@@ -784,6 +784,7 @@ Blockly.Blocks['param_get'] = {
     this.appendDummyInput()
         .appendField('null', 'VAR')
     this.setOutput(true);
+    this.getField_('VAR').EDITABLE = true; // to save field in XML
     // TODO: set tooltip
     // this.setTooltip(Blockly.Msg.PARAM_GET_TOOLTIP);
   },
