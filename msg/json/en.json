@@ -1,11 +1,16 @@
 {
 	"@metadata": {
 		"author": "Ellen Spertus <ellen.spertus@gmail.com>",
+<<<<<<< HEAD
 		"lastupdated": "2015-01-30 14:25:49.904469",
+=======
+		"lastupdated": "2015-02-05 13:05:05.137671",
+>>>>>>> d05177e17c0293ed8e1b9abbba4d570f5d05c327
 		"locale": "en",
 		"messagedocumentation" : "qqq"
 	},
 	"VARIABLES_DEFAULT_NAME": "item",
+	"TODAY": "Today",
 	"DUPLICATE_BLOCK": "Duplicate",
 	"ADD_COMMENT": "Add Comment",
 	"REMOVE_COMMENT": "Remove Comment",

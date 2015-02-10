@@ -28,6 +28,7 @@ goog.provide('Blockly.Xml');
 
 // TODO(scr): Fix circular dependencies
 // goog.require('Blockly.Block');
+goog.require('goog.dom');
 
 
 /**
@@ -244,6 +245,8 @@ Blockly.Xml.domToBlock = function(workspace, xmlBlock, opt_reuseBlock) {
   var topBlock = Blockly.Xml.domToBlockHeadless_(workspace, xmlBlock,
                                                  opt_reuseBlock);
   if (workspace.rendered) {
+    // Hide connections to speed up assembly.
+    topBlock.setConnectionsHidden(true);
     // Generate list of all blocks.
     var blocks = topBlock.getDescendants();
     // Render each block.
@@ -253,6 +256,11 @@ Blockly.Xml.domToBlock = function(workspace, xmlBlock, opt_reuseBlock) {
     for (var i = blocks.length - 1; i >= 0; i--) {
       blocks[i].render(false);
     }
+    // Populating the connection database may be defered until after the blocks
+    // have renderend.
+    setTimeout(function() {
+      topBlock.setConnectionsHidden(false);
+    }, 1);
     topBlock.updateDisabled();
     // Fire an event to allow scrollbars to resize.
     Blockly.fireUiEvent(window, 'resize');

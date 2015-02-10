@@ -29,6 +29,8 @@ goog.provide('Blockly.Blocks.procedures');
 goog.require('Blockly.Blocks');
 
 
+Blockly.Blocks.procedures.HUE = 290;
+
 Blockly.Blocks['procedures_defnoreturn'] = {
   /**
    * Block for defining a procedure with no return value.
@@ -36,7 +38,7 @@ Blockly.Blocks['procedures_defnoreturn'] = {
    */
   init: function() {
     this.setHelpUrl(Blockly.Msg.PROCEDURES_DEFNORETURN_HELPURL);
-    this.setColour(290);
+    this.setColour(Blockly.Blocks.procedures.HUE);
     var name = Blockly.Procedures.findLegalName(
         Blockly.Msg.PROCEDURES_DEFNORETURN_PROCEDURE, this);
     this.appendDummyInput()
@@ -366,7 +368,7 @@ Blockly.Blocks['procedures_defreturn'] = {
    */
   init: function() {
     this.setHelpUrl(Blockly.Msg.PROCEDURES_DEFRETURN_HELPURL);
-    this.setColour(290);
+    this.setColour(Blockly.Blocks.procedures.HUE);
     var name = Blockly.Procedures.findLegalName(
         Blockly.Msg.PROCEDURES_DEFRETURN_PROCEDURE, this);
     this.appendDummyInput()
@@ -414,7 +416,7 @@ Blockly.Blocks['procedures_mutatorcontainer'] = {
    * @this Blockly.Block
    */
   init: function() {
-    this.setColour(290);
+    this.setColour(Blockly.Blocks.procedures.HUE);
     this.appendDummyInput()
         .appendField(Blockly.Msg.PROCEDURES_MUTATORCONTAINER_TITLE);
     this.appendStatementInput('STACK');
@@ -432,7 +434,7 @@ Blockly.Blocks['procedures_mutatorarg'] = {
    * @this Blockly.Block
    */
   init: function() {
-    this.setColour(290);
+    this.setColour(Blockly.Blocks.procedures.HUE);
     this.appendDummyInput()
         .appendField(Blockly.Msg.PROCEDURES_MUTATORARG_TITLE)
         .appendField(new Blockly.FieldTextInput('x', this.validator_), 'NAME');
@@ -463,7 +465,7 @@ Blockly.Blocks['procedures_callnoreturn'] = {
    */
   init: function() {
     this.setHelpUrl(Blockly.Msg.PROCEDURES_CALLNORETURN_HELPURL);
-    this.setColour(290);
+    this.setColour(Blockly.Blocks.procedures.HUE);
     this.appendDummyInput()
         .appendField(Blockly.Msg.PROCEDURES_CALLNORETURN_CALL)
         .appendField('', 'NAME')
@@ -572,6 +574,9 @@ Blockly.Blocks['procedures_callnoreturn'] = {
           }
         }
       }
+      if (savedRendered) {
+        input.init();
+      }
     }
     // Add 'with:' if there are parameters.
     var withField = this.getField_('WITH');
@@ -666,7 +671,7 @@ Blockly.Blocks['procedures_callreturn'] = {
    */
   init: function() {
     this.setHelpUrl(Blockly.Msg.PROCEDURES_CALLRETURN_HELPURL);
-    this.setColour(290);
+    this.setColour(Blockly.Blocks.procedures.HUE);
     this.appendDummyInput()
         .appendField(Blockly.Msg.PROCEDURES_CALLRETURN_CALL)
         .appendField('', 'NAME')
@@ -694,7 +699,7 @@ Blockly.Blocks['procedures_ifreturn'] = {
    */
   init: function() {
     this.setHelpUrl('http://c2.com/cgi/wiki?GuardClause');
-    this.setColour(290);
+    this.setColour(Blockly.Blocks.procedures.HUE);
     this.appendValueInput('CONDITION')
         .setCheck('Boolean')
         .appendField(Blockly.Msg.CONTROLS_IF_MSG_IF);
