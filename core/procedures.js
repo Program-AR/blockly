@@ -237,6 +237,17 @@ Blockly.Procedures.getCallers = function(name, workspace) {
 };
 
 /**
+ * Find all the params calls of a named procedure.
+ * @param {string} name Name of procedure.
+ * @param {!Blockly.Workspace} workspace The workspace to find callers in.
+ * @return {!Array.<!Blockly.Block>} Array of get_param blocks.
+ */
+Blockly.Procedures.getParamCalls = function(name, workspace) {
+  var blocks = workspace.getAllBlocks().filter(function(b) { return b.type === 'param_get' && (!b.parentBlock_ || b.isFromDef(name)); });
+  return blocks;
+};
+
+/**
  * When a procedure definition is disposed of, find and dispose of all its
  *     callers.
  * @param {string} name Name of deleted procedure definition.

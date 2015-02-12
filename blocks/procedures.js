@@ -102,6 +102,38 @@ Blockly.Blocks['procedures_defnoreturn'] = {
     }
     this.setFieldValue(paramString, 'PARAMS');
   },
+  
+  paramDiff_: function() {
+    var thisArgs = this.arguments_;
+    return this.oldArgs_.filter(function(i) {return thisArgs.indexOf(i) < 0 ;});
+  },
+  
+  updateParamCalls_: function() {
+    // if there are no arguments, nothing changes
+    // updateParamCalls_ is called when the composition of the mutator is made.
+    // So the first call is this case.
+    if(this.arguments_.length === 0) { return; }
+  
+    // get params attached to this def or without parent
+    var paramsFromDef = Blockly.Procedures.getParamCalls(this.getFieldValue('NAME'), this.workspace);
+    // compute the param that must change
+    var paramToChange = this.paramDiff_();
+    // if there is more than one param to change, don't do anything
+    if(paramToChange.length > 1) { return; }
+    // compute the new name of the param 
+    var oldArgss = this.oldArgs_;
+    var newParam      = this.arguments_.filter(function(i) { return paramToChange.indexOf(i) < 0 && oldArgss.indexOf(i) < 0; });
+    // change the name of the old param to the new one
+    paramToChange.forEach(function(p) {
+      paramsFromDef.forEach(function(b) {
+        if(b.getParamName() === p && newParam.length > 0) {
+           b.setParamName(newParam[0]);
+        }
+      });
+    });
+    this.oldArgs_ = this.arguments_; // change the oldArgs to be de new args
+  },
+  
   /**
    * Create XML to represent the argument inputs.
    * @return {Element} XML storage element.
@@ -158,6 +190,7 @@ Blockly.Blocks['procedures_defnoreturn'] = {
     }
 
     // Parameter list.
+    this.oldArgs_ = this.arguments_;
     var connection = containerBlock.getInput('STACK').connection;
     for (var i = 0; i < this.arguments_.length; i++) {
       var paramBlock = Blockly.Block.obtain(workspace, 'procedures_mutatorarg');
@@ -179,7 +212,7 @@ Blockly.Blocks['procedures_defnoreturn'] = {
    * @this Blockly.Block
    */
   compose: function(containerBlock) {
-    // Parameter list.
+    // Parameter list.    
     this.arguments_ = [];
     this.paramIds_ = [];
     var paramBlock = containerBlock.getInputTargetBlock('STACK');
@@ -189,6 +222,7 @@ Blockly.Blocks['procedures_defnoreturn'] = {
       paramBlock = paramBlock.nextConnection &&
           paramBlock.nextConnection.targetBlock();
     }
+    this.updateParamCalls_();
     this.updateParams_();
     Blockly.Procedures.mutateCallers(this.getFieldValue('NAME'),
         this.workspace, this.arguments_, this.paramIds_);
@@ -540,6 +574,7 @@ Blockly.Blocks['procedures_callnoreturn'] = {
         this.quarkArguments_ = [];
       }
     }
+    
     // Switch off rendering while the block is rebuilt.
     var savedRendered = this.rendered;
     this.rendered = false;
@@ -803,6 +838,15 @@ Blockly.Blocks['param_get'] = {
     // From variables, the param was a var
 //    return [this.getFieldValue('VAR')];
   },
+  
+  getParamName: function() {
+    return this.getFieldValue('VAR');
+  },
+  
+  setParamName: function(newName) {
+    return this.setFieldValue(newName, 'VAR');
+  },
+  
   /**
    * Notification that a parameter is renaming.
    * If the name matches one of this block's params, rename it.
@@ -814,5 +858,16 @@ Blockly.Blocks['param_get'] = {
     if (Blockly.Names.equals(oldName, this.getFieldValue('VAR'))) {
       this.setFieldValue(newName, 'VAR');
     }
-  }
+  },
+  
+  isFromDef: function(procedureName) {
+    var p = this.parentBlock_;
+    while(p) {
+     if(p.type === 'procedures_defnoreturn' || p.type === 'procedures_defreturn') {
+      return p.getFieldValue('NAME') === procedureName;   
+     }
+     p = p.parentBlock_;
+    }
+    return false;
+  }  
 };
