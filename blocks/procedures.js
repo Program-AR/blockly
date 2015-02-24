@@ -31,6 +31,8 @@ goog.require('Blockly.Blocks');
 
 Blockly.Blocks.procedures.HUE = 290;
 
+Blockly.Blocks.procedures.params = { HUE: 290 };
+
 Blockly.Blocks['procedures_defnoreturn'] = {
   /**
    * Block for defining a procedure with no return value.
@@ -102,25 +104,25 @@ Blockly.Blocks['procedures_defnoreturn'] = {
     }
     this.setFieldValue(paramString, 'PARAMS');
   },
-  
+
   paramDiff_: function() {
     var thisArgs = this.arguments_;
     return this.oldArgs_.filter(function(i) {return thisArgs.indexOf(i) < 0 ;});
   },
-  
+
   updateParamCalls_: function() {
     // if there are no arguments, nothing changes
     // updateParamCalls_ is called when the composition of the mutator is made.
     // So the first call is this case.
     if(this.arguments_.length === 0) { return; }
-  
+
     // get params attached to this def or without parent
     var paramsFromDef = Blockly.Procedures.getParamCalls(this.getFieldValue('NAME'), this.workspace);
     // compute the param that must change
     var paramToChange = this.paramDiff_();
     // if there is more than one param to change, don't do anything
     if(paramToChange.length > 1) { return; }
-    // compute the new name of the param 
+    // compute the new name of the param
     var oldArgss = this.oldArgs_;
     var newParam      = this.arguments_.filter(function(i) { return paramToChange.indexOf(i) < 0 && oldArgss.indexOf(i) < 0; });
     // change the name of the old param to the new one
@@ -133,7 +135,7 @@ Blockly.Blocks['procedures_defnoreturn'] = {
     });
     this.oldArgs_ = this.arguments_; // change the oldArgs to be de new args
   },
-  
+
   /**
    * Create XML to represent the argument inputs.
    * @return {Element} XML storage element.
@@ -212,7 +214,7 @@ Blockly.Blocks['procedures_defnoreturn'] = {
    * @this Blockly.Block
    */
   compose: function(containerBlock) {
-    // Parameter list.    
+    // Parameter list.
     this.arguments_ = [];
     this.paramIds_ = [];
     var paramBlock = containerBlock.getInputTargetBlock('STACK');
@@ -320,7 +322,7 @@ Blockly.Blocks['procedures_defnoreturn'] = {
       }
     }
   },
-  
+
   /**
    * Add custom menu options to this block's context menu.
    * @param {!Array} options List of menu options to add to.
@@ -365,33 +367,33 @@ Blockly.Blocks['procedures_defnoreturn'] = {
    * @this Blockly.Block
    */
   getParameterSvg: function(name) {
-    
+
     var newBlock = new Blockly.Block.obtain(this.workspace, 'param_get');
     newBlock.setFieldValue(name, 'VAR');
     newBlock.initSvg();
     newBlock.render();
     newBlock.moveBy(10,5);
-    
+
     // SVG that contains the svg paramater block
     var svg = Blockly.createSvgElement('svg', {
       'width': newBlock.width+10,
       'height': newBlock.height+5
     });
-    
+
     var blockSvg = newBlock.getSvgRoot();
-    
+
     svg.appendChild(blockSvg);
-    
+
     // to remove all the listeners
-    var clonedBlockSvg = blockSvg.cloneNode(true); 
+    var clonedBlockSvg = blockSvg.cloneNode(true);
     blockSvg.parentNode.replaceChild(clonedBlockSvg, blockSvg);
-    
+
     // remove the block from top blocks
     this.workspace.removeTopBlock(newBlock);
-    
+
     return svg;
   },
-  
+
   callType_: 'procedures_callnoreturn'
 };
 
@@ -574,7 +576,7 @@ Blockly.Blocks['procedures_callnoreturn'] = {
         this.quarkArguments_ = [];
       }
     }
-    
+
     // Switch off rendering while the block is rebuilt.
     var savedRendered = this.rendered;
     this.rendered = false;
@@ -820,7 +822,7 @@ Blockly.Blocks['param_get'] = {
   init: function() {
     // TODO: set helpurl
     // this.setHelpUrl(Blockly.Msg.PARAM_GET_HELPURL);
-    this.setColour(290);
+    this.setColour(Blockly.Blocks.procedures.params.HUE);
     this.appendDummyInput()
         .appendField('null', 'VAR')
     this.setOutput(true);
@@ -838,15 +840,15 @@ Blockly.Blocks['param_get'] = {
     // From variables, the param was a var
 //    return [this.getFieldValue('VAR')];
   },
-  
+
   getParamName: function() {
     return this.getFieldValue('VAR');
   },
-  
+
   setParamName: function(newName) {
     return this.setFieldValue(newName, 'VAR');
   },
-  
+
   /**
    * Notification that a parameter is renaming.
    * If the name matches one of this block's params, rename it.
@@ -859,15 +861,15 @@ Blockly.Blocks['param_get'] = {
       this.setFieldValue(newName, 'VAR');
     }
   },
-  
+
   isFromDef: function(procedureName) {
     var p = this.parentBlock_;
     while(p) {
      if(p.type === 'procedures_defnoreturn' || p.type === 'procedures_defreturn') {
-      return p.getFieldValue('NAME') === procedureName;   
+      return p.getFieldValue('NAME') === procedureName;
      }
      p = p.parentBlock_;
     }
     return false;
-  }  
+  }
 };
