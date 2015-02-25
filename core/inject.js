@@ -145,7 +145,11 @@ Blockly.parseOptions_ = function(options) {
   Blockly.collapse = hasCollapse;
   Blockly.comments = hasComments;
   Blockly.disable = hasDisable;
-  Blockly.duplicate = options['duplicate'] || false;
+  if(options['duplicate'] === undefined) {
+    Blockly.duplicate = true;
+  } else {
+    Blockly.duplicate = options['duplicate'];
+  }
   Blockly.externalInputs = options['externalInputs'] || false;
   Blockly.viewHelp = options['viewHelp'] || false;
   Blockly.trashOnlyDelete = hasTrashOnlyDelete;
