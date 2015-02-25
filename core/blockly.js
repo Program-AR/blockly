@@ -94,9 +94,13 @@ Blockly.SPRITE = {
  * @param {number} hue Hue on a colour wheel (0-360).
  * @return {string} RGB code, e.g. '#5ba65b'.
  */
-Blockly.makeColour = function(hue) {
-  return goog.color.hsvToHex(hue, Blockly.HSV_SATURATION,
-      Blockly.HSV_VALUE * 255);
+Blockly.makeColour = function(block) {
+  if(Blockly.rgbColours) {
+    return block.getRGBColour();
+  } else {
+    return goog.color.hsvToHex(block.getColour(), Blockly.HSV_SATURATION,
+        Blockly.HSV_VALUE * 255);
+  }
 };
 
 /**

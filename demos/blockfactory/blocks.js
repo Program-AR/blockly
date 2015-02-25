@@ -687,6 +687,7 @@ Blockly.Blocks['type_other'] = {
 };
 
 Blockly.Blocks['colour_hue'] = {
+  // TODO: add RGB colour option
   // Set the colour of the block.
   init: function() {
     this.appendDummyInput()

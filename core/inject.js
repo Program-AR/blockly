@@ -150,6 +150,7 @@ Blockly.parseOptions_ = function(options) {
   } else {
     Blockly.duplicate = options['duplicate'];
   }
+  Blockly.rgbColours = options['rgbColours'] || false;
   Blockly.externalInputs = options['externalInputs'] || false;
   Blockly.viewHelp = options['viewHelp'] || false;
   Blockly.trashOnlyDelete = hasTrashOnlyDelete;

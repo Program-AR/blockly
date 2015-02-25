@@ -129,7 +129,7 @@ Blockly.Icon.prototype.iconClick_ = function(e) {
  */
 Blockly.Icon.prototype.updateColour = function() {
   if (this.isVisible()) {
-    var hexColour = Blockly.makeColour(this.block_.getColour());
+    var hexColour = Blockly.makeColour(this.block_);
     this.bubble_.setColour(hexColour);
   }
 };

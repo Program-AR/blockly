@@ -451,7 +451,7 @@ Blockly.BlockSvg.prototype.showContextMenu_ = function(e) {
   var options = [];
 
   if (this.isDeletable() && this.isMovable() && !block.isInFlyout) {
-    
+
     if(Blockly.duplicate) {
       // Option to duplicate this block.
       var duplicateOption = {
@@ -483,7 +483,7 @@ Blockly.BlockSvg.prototype.showContextMenu_ = function(e) {
       }
       options.push(commentOption);
     }
-    
+
     if(Blockly.externalInputs) {
       // Option to make block inline.
       if (!this.collapsed_) {
@@ -552,10 +552,10 @@ Blockly.BlockSvg.prototype.showContextMenu_ = function(e) {
           block.dispose(true, true);
         }
       };
-      options.push(deleteOption);      
+      options.push(deleteOption);
     }
   }
-  
+
   if(Blockly.viewHelp) {
     // Option to get help.
     var url = goog.isFunction(this.helpUrl) ? this.helpUrl() : this.helpUrl;
@@ -1067,7 +1067,7 @@ Blockly.BlockSvg.prototype.updateColour = function() {
     // Disabled blocks don't have colour.
     return;
   }
-  var hexColour = Blockly.makeColour(this.getColour());
+  var hexColour = Blockly.makeColour(this);
   var rgb = goog.color.hexToRgb(hexColour);
   var rgbLight = goog.color.lighten(rgb, 0.3);
   var rgbDark = goog.color.darken(rgb, 0.4);
