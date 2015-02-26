@@ -39,6 +39,7 @@ goog.require('goog.array');
 goog.require('goog.asserts');
 goog.require('goog.math.Coordinate');
 goog.require('goog.string');
+goog.require('goog.color');
 
 
 /**
@@ -566,14 +567,23 @@ Blockly.Block.prototype.setTooltip = function(newTip) {
 
 /**
  * Get the colour of a block.
- * @return {number} HSV hue value.
+ * @return {string} Hex value.
  */
 Blockly.Block.prototype.getColour = function() {
   if(Blockly.rgbColours) {
-    return this.colorRGB_;
+    return this.colourRGB_;
   } else {
-    return this.colourHue_;
+    return goog.color.hsvToHex(this.colourHue_, Blockly.HSV_SATURATION,
+        Blockly.HSV_VALUE * 255);
   }
+};
+
+/**
+ * Get the HUE colour of a block.
+ * @return {number} HSV hue value.
+ */
+Blockly.Block.prototype.getHueValue = function() {
+  return this.colourHue_;
 };
 
 /**
@@ -582,7 +592,7 @@ Blockly.Block.prototype.getColour = function() {
  */
 Blockly.Block.prototype.setColour = function(colour) {
   if(Blockly.rgbColours) {
-    this.colorRBG_ = colour;
+    this.colourRGB_ = colour;
   } else {
     this.colourHue_ = colour;
   }

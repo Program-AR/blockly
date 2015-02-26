@@ -290,7 +290,7 @@ Blockly.FieldDropdown.prototype.setValue = function(newValue) {
 Blockly.FieldDropdown.prototype.setText = function(text) {
   if (this.sourceBlock_ && this.arrow_) {
     // Update arrow's colour.
-    this.arrow_.style.fill = Blockly.makeColour(this.sourceBlock_);
+    this.arrow_.style.fill = this.sourceBlock_.getColour();
   }
   if (text === null || text === this.text_) {
     // No change if null.

@@ -90,20 +90,6 @@ Blockly.SPRITE = {
 };
 
 /**
- * Convert a hue (HSV model) into an RGB hex triplet.
- * @param {number} hue Hue on a colour wheel (0-360).
- * @return {string} RGB code, e.g. '#5ba65b'.
- */
-Blockly.makeColour = function(block) {
-  if(Blockly.rgbColours) {
-    return block.getRGBColour();
-  } else {
-    return goog.color.hsvToHex(block.getColour(), Blockly.HSV_SATURATION,
-        Blockly.HSV_VALUE * 255);
-  }
-};
-
-/**
  * ENUM for a right-facing value input.  E.g. 'set item to' or 'return'.
  * @const
  */
