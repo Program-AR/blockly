@@ -150,6 +150,13 @@ Blockly.parseOptions_ = function(options) {
   } else {
     Blockly.duplicate = options['duplicate'];
   }
+  if(options['globalVariables'] === undefined) {
+    Blockly.globalVariables = true;
+  } else {
+    Blockly.globalVariables = options['globalVariables'];
+  }
+
+  Blockly.oneReturnOnly = options['oneReturnOnly'] || false;
   Blockly.rgbColours = options['rgbColours'] || false;
   Blockly.externalInputs = options['externalInputs'] || false;
   Blockly.viewHelp = options['viewHelp'] || false;
