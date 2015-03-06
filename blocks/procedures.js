@@ -424,6 +424,8 @@ Blockly.Blocks['procedures_defreturn'] = {
   },
   setStatements_: Blockly.Blocks['procedures_defnoreturn'].setStatements_,
   updateParams_: Blockly.Blocks['procedures_defnoreturn'].updateParams_,
+  updateParamCalls_: Blockly.Blocks['procedures_defnoreturn'].updateParamCalls_,
+  paramDiff_: Blockly.Blocks['procedures_defnoreturn'].paramDiff_,
   mutationToDom: Blockly.Blocks['procedures_defnoreturn'].mutationToDom,
   domToMutation: Blockly.Blocks['procedures_defnoreturn'].domToMutation,
   decompose: Blockly.Blocks['procedures_defnoreturn'].decompose,
