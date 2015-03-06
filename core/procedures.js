@@ -170,13 +170,13 @@ Blockly.Procedures.rename = function(text) {
  * @param {!Blockly.Workspace} workspace The flyout's workspace.
  */
 Blockly.Procedures.flyoutCategory = function(blocks, gaps, margin, workspace) {
-  if (Blockly.Blocks['procedures_defnoreturn']) {
+  if (Blockly.Blocks['procedures_defnoreturn'] && Blockly.def_procedures) {
     var block = Blockly.Block.obtain(workspace, 'procedures_defnoreturn');
     block.initSvg();
     blocks.push(block);
     gaps.push(margin * 2);
   }
-  if (Blockly.Blocks['procedures_defreturn']) {
+  if (Blockly.Blocks['procedures_defreturn'] && Blockly.def_functions) {
     var block = Blockly.Block.obtain(workspace, 'procedures_defreturn');
     block.initSvg();
     blocks.push(block);

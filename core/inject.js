@@ -155,6 +155,16 @@ Blockly.parseOptions_ = function(options) {
   } else {
     Blockly.globalVariables = options['globalVariables'];
   }
+  if(options['def_procedures'] === undefined) {
+    Blockly.def_procedures = true;
+  } else {
+    Blockly.def_procedures = options['def_procedures'];
+  }
+  if(options['def_functions'] === undefined) {
+    Blockly.def_functions = true;
+  } else {
+    Blockly.def_functions = options['def_functions'];
+  }
 
   Blockly.oneReturnOnly = options['oneReturnOnly'] || false;
   Blockly.rgbColours = options['rgbColours'] || false;
