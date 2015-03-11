@@ -44,3 +44,7 @@ Blockly.Dart['variables_set'] = function(block) {
       Blockly.Variables.NAME_TYPE);
   return varName + ' = ' + argument0 + ';\n';
 };
+
+Blockly.Dart['local_var_get'] = Blockly.Dart['variables_get'];
+
+Blockly.Dart['local_var_set'] = Blockly.Dart['variables_set'];

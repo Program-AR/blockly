@@ -90,7 +90,7 @@ Blockly.Dart.init = function(workspace) {
   }
 
   var defvars = [];
-  var variables = Blockly.Variables.allVariables(workspace);
+  var variables = Blockly.Variables.allVariables(workspace, 'global');
   for (var x = 0; x < variables.length; x++) {
     defvars[x] = 'var ' +
         Blockly.Dart.variableDB_.getName(variables[x],

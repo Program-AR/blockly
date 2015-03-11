@@ -44,3 +44,9 @@ Blockly.Python['variables_set'] = function(block) {
       Blockly.Variables.NAME_TYPE);
   return varName + ' = ' + argument0 + '\n';
 };
+
+Blockly.Python['local_var_get'] = Blockly.Python['variables_get'];
+
+Blockly.Python['local_var_set'] = Blockly.Python['variables_set'];
+
+

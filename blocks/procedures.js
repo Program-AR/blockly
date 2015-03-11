@@ -27,12 +27,16 @@
 goog.provide('Blockly.Blocks.procedures');
 
 goog.require('Blockly.Blocks');
+goog.require('Blockly.utils');
 
 // HUE VALUE BY DEFAULT
 Blockly.Blocks.procedures.COLOUR = 290;
 
 // HUE VALUE BY DEFAULT
 Blockly.Blocks.procedures.params = { COLOUR: 290 };
+
+// HUE VALUE BY DEFAULT
+Blockly.Blocks.procedures.vars = { COLOUR: 290 };
 
 Blockly.Blocks['procedures_defnoreturn'] = {
   /**
@@ -131,8 +135,8 @@ Blockly.Blocks['procedures_defnoreturn'] = {
     // change the name of the old param to the new one
     paramToChange.forEach(function(p) {
       paramsFromDef.forEach(function(b) {
-        if(b.getParamName() === p && newParam.length > 0) {
-           b.setParamName(newParam[0]);
+        if(b.getName() === p && newParam.length > 0) {
+           b.setName(newParam[0]);
         }
       });
     });
@@ -333,9 +337,43 @@ Blockly.Blocks['procedures_defnoreturn'] = {
    */
   customContextMenu: function(options) {
     // Add option to create caller.
+    this.generateCallerOption(options);
+
+    // Add options to create getters for each parameter.
+    if (!this.isCollapsed()) {
+      for (var i = 0; i < this.arguments_.length; i++) {
+        this.generateGetParamOption(options, i);
+      }
+    }
+
+    this.generateLocalVarOption(options);
+  },
+
+  generateLocalVarOption: function(options) {
+    var option = {enabled: true};
+    var name = 'v';
+                  // this.contextMenuMsg_.replace('%1', name);
+    option.text = Blockly.getBlockSvg(this.workspace, 'local_var_set',
+      function(b) {
+        b.setFieldValue(name, 'VAR');
+        b.moveBy(10, 5);
+      });
+    var xmlField = goog.dom.createDom('field', null, name);
+    xmlField.setAttribute('name', 'VAR');
+    var xmlBlock = goog.dom.createDom('block', null, xmlField);
+    xmlBlock.setAttribute('type', 'local_var_set');
+    option.callback = Blockly.ContextMenu.callbackFactory(this, xmlBlock);
+    options.push(option);
+  },
+
+  generateCallerOption: function(options) {
+    // Add option to create caller.
     var option = {enabled: true};
     var name = this.getFieldValue('NAME');
-    option.text = Blockly.Msg.PROCEDURES_CREATE_DO.replace('%1', name);
+    // textual form
+    // option.text = Blockly.Msg.PROCEDURES_CREATE_DO.replace('%1', name);
+    // SVG form
+    option.text = this.getCallSvg();
     var xmlMutation = goog.dom.createDom('mutation');
     xmlMutation.setAttribute('name', name);
     for (var i = 0; i < this.arguments_.length; i++) {
@@ -347,54 +385,32 @@ Blockly.Blocks['procedures_defnoreturn'] = {
     xmlBlock.setAttribute('type', this.callType_);
     option.callback = Blockly.ContextMenu.callbackFactory(this, xmlBlock);
     options.push(option);
-
-    // Add options to create getters for each parameter.
-    if (!this.isCollapsed()) {
-      for (var i = 0; i < this.arguments_.length; i++) {
-        var option = {enabled: true};
-        var name = this.arguments_[i];
-        option.text = this.getParameterSvg(name) // Blockly.Msg.VARIABLES_SET_CREATE_GET.replace('%1', name);
-        var xmlField = goog.dom.createDom('field', null, name);
-        xmlField.setAttribute('name', 'VAR');
-        var xmlBlock = goog.dom.createDom('block', null, xmlField);
-        xmlBlock.setAttribute('type', 'param_get');
-        option.callback = Blockly.ContextMenu.callbackFactory(this, xmlBlock);
-        options.push(option);
-      }
-    }
   },
 
-  /**
-   * Get the svg representation of a parameter
-   * @name {!string} name of the parameter.
-   * @this Blockly.Block
-   */
+  generateGetParamOption: function(options, i) {
+    var option = {enabled: true};
+    var name = this.arguments_[i];
+    option.text = this.getParameterSvg(name);
+    var xmlField = goog.dom.createDom('field', null, name);
+    xmlField.setAttribute('name', 'VAR');
+    var xmlBlock = goog.dom.createDom('block', null, xmlField);
+    xmlBlock.setAttribute('type', 'param_get');
+    option.callback = Blockly.ContextMenu.callbackFactory(this, xmlBlock);
+    options.push(option);
+  },
+
   getParameterSvg: function(name) {
-
-    var newBlock = new Blockly.Block.obtain(this.workspace, 'param_get');
-    newBlock.setFieldValue(name, 'VAR');
-    newBlock.initSvg();
-    newBlock.render();
-    newBlock.moveBy(10,5);
-
-    // SVG that contains the svg paramater block
-    var svg = Blockly.createSvgElement('svg', {
-      'width': newBlock.width+10,
-      'height': newBlock.height+5
+    return Blockly.getBlockSvg(this.workspace, 'param_get', function(b) {
+      b.setFieldValue(name, 'VAR');
+      b.moveBy(10,5);
     });
+  },
 
-    var blockSvg = newBlock.getSvgRoot();
-
-    svg.appendChild(blockSvg);
-
-    // to remove all the listeners
-    var clonedBlockSvg = blockSvg.cloneNode(true);
-    blockSvg.parentNode.replaceChild(clonedBlockSvg, blockSvg);
-
-    // remove the block from top blocks
-    this.workspace.removeTopBlock(newBlock);
-
-    return svg;
+  getCallSvg: function() {
+    var proc_name = this.getFieldValue('NAME');
+    return Blockly.getBlockSvg(this.workspace, this.callType_, function(b) {
+      b.setFieldValue(proc_name, 'NAME');
+    });
   },
 
   callType_: 'procedures_callnoreturn'
@@ -449,7 +465,16 @@ Blockly.Blocks['procedures_defreturn'] = {
   getVars: Blockly.Blocks['procedures_defnoreturn'].getVars,
   renameVar: Blockly.Blocks['procedures_defnoreturn'].renameVar,
   customContextMenu: Blockly.Blocks['procedures_defnoreturn'].customContextMenu,
+  generateCallerOption: Blockly.Blocks['procedures_defnoreturn'].generateCallerOption,
+  generateGetParamOption: Blockly.Blocks['procedures_defnoreturn'].generateGetParamOption,
   getParameterSvg: Blockly.Blocks['procedures_defnoreturn'].getParameterSvg,
+  getCallSvg: function() {
+    var proc_name = this.getFieldValue('NAME');
+    return Blockly.getBlockSvg(this.workspace, this.callType_, function(b) {
+      b.setFieldValue(proc_name, 'NAME');
+      b.moveBy(10,5);
+    });
+  },
   callType_: 'procedures_callreturn'
 };
 
@@ -859,11 +884,11 @@ Blockly.Blocks['param_get'] = {
 //    return [this.getFieldValue('VAR')];
   },
 
-  getParamName: function() {
+  getName: function() {
     return this.getFieldValue('VAR');
   },
 
-  setParamName: function(newName) {
+  setName: function(newName) {
     return this.setFieldValue(newName, 'VAR');
   },
 
@@ -878,16 +903,5 @@ Blockly.Blocks['param_get'] = {
     if (Blockly.Names.equals(oldName, this.getFieldValue('VAR'))) {
       this.setFieldValue(newName, 'VAR');
     }
-  },
-
-  isFromDef: function(procedureName) {
-    var p = this.parentBlock_;
-    while(p) {
-     if(p.type === 'procedures_defnoreturn' || p.type === 'procedures_defreturn') {
-      return p.getFieldValue('NAME') === procedureName;
-     }
-     p = p.parentBlock_;
-    }
-    return false;
   }
 };

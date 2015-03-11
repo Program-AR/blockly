@@ -88,7 +88,7 @@ Blockly.FieldVariable.prototype.init = function(block) {
     } else {
       var workspace = block.workspace;
     }
-    this.setValue(Blockly.Variables.generateUniqueName(workspace));
+    this.setValue(Blockly.Variables.generateUniqueName(workspace, 'variables_set'));
   }
   Blockly.FieldVariable.superClass_.init.call(this, block);
 };
@@ -129,7 +129,7 @@ Blockly.FieldVariable.prototype.setValue = function(text) {
 Blockly.FieldVariable.dropdownCreate = function() {
   if (this.sourceBlock_ && this.sourceBlock_.workspace) {
     var variableList =
-        Blockly.Variables.allVariables(this.sourceBlock_.workspace);
+        Blockly.Variables.allVariables(this.sourceBlock_.workspace, 'global');
   } else {
     var variableList = [];
   }

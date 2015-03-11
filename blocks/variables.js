@@ -26,6 +26,7 @@
 
 goog.provide('Blockly.Blocks.variables');
 
+goog.require('Blockly.utils');
 goog.require('Blockly.Blocks');
 
 // HUE VALUE BY DEFAULT
@@ -77,7 +78,12 @@ Blockly.Blocks['variables_get'] = {
   customContextMenu: function(options) {
     var option = {enabled: true};
     var name = this.getFieldValue('VAR');
-    option.text = this.contextMenuMsg_.replace('%1', name);
+                  // this.contextMenuMsg_.replace('%1', name);
+    option.text = Blockly.getBlockSvg(this.workspace, this.contextMenuType_,
+      function(b) {
+        b.setFieldValue(name, 'VAR');
+        b.moveBy(10, 5);
+      });
     var xmlField = goog.dom.createDom('field', null, name);
     xmlField.setAttribute('name', 'VAR');
     var xmlBlock = goog.dom.createDom('block', null, xmlField);
@@ -130,3 +136,101 @@ Blockly.Blocks['variables_set'] = {
   },
   customContextMenu: Blockly.Blocks['variables_get'].customContextMenu
 };
+
+Blockly.Blocks['local_var_get'] = {
+  /**
+   * Block for local variable getter.
+   * @this Blockly.Block
+   */
+  init: function() {
+    // TODO: set helpurl
+    this.setColour(Blockly.Blocks.procedures.vars.COLOUR);
+    this.appendDummyInput()
+        .appendField('null', 'VAR')
+    this.setOutput(true);
+    this.getField_('VAR').EDITABLE = true; // to save field in XML
+    // TODO: set tooltip
+    // this.setTooltip(Blockly.Msg.PARAM_GET_TOOLTIP);
+  },
+  /**
+   * Return all variables referenced by this block.
+   * @return {!Array.<string>} List of variable names.
+   * @this Blockly.Block
+   */
+  getVars: function() {
+    return [this.getFieldValue('VAR')];
+  },
+
+  getName: function() {
+    return this.getFieldValue('VAR');
+  },
+
+  setName: function(newName) {
+    return this.setFieldValue(newName, 'VAR');
+  },
+
+  /**
+   * Notification that a var is renaming.
+   * If the name matches one of this block's params, rename it.
+   * @param {string} oldName Previous name of param.
+   * @param {string} newName Renamed param.
+   * @this Blockly.Block
+   */
+  renameVar: function(oldName, newName) {
+    if (Blockly.Names.equals(oldName, this.getFieldValue('VAR'))) {
+      this.setFieldValue(newName, 'VAR');
+    }
+  }
+};
+
+Blockly.Blocks['local_var_set'] = {
+  /**
+   * Block for local variable setter.
+   * @this Blockly.Block
+   */
+  init: function() {
+    // TODO: set helpurl
+    this.setColour(Blockly.Blocks.procedures.vars.COLOUR);
+    this.interpolateMsg(
+        // TODO: Combine these messages instead of using concatenation.
+        Blockly.Msg.VARIABLES_SET_TITLE + ' %1 ' +
+        Blockly.Msg.VARIABLES_SET_TAIL + ' %2',
+        ['VAR', new Blockly.FieldVariable(Blockly.Msg.VARIABLES_SET_ITEM)],
+        ['VALUE', null, Blockly.ALIGN_RIGHT],
+        Blockly.ALIGN_RIGHT);
+    this.setPreviousStatement(true);
+    this.setNextStatement(true);
+    // TODO: set tooltip
+    // this.setTooltip(Blockly.Msg.PARAM_GET_TOOLTIP);
+  },
+  /**
+   * Return all variables referenced by this block.
+   * @return {!Array.<string>} List of variable names.
+   * @this Blockly.Block
+   */
+  getVars: function() {
+    return [this.getFieldValue('VAR')];
+  },
+
+  getName: function() {
+    return this.getFieldValue('VAR');
+  },
+
+  setName: function(newName) {
+    return this.setFieldValue(newName, 'VAR');
+  },
+
+  /**
+   * Notification that a var is renaming.
+   * If the name matches one of this block's params, rename it.
+   * @param {string} oldName Previous name of param.
+   * @param {string} newName Renamed param.
+   * @this Blockly.Block
+   */
+  renameVar: function(oldName, newName) {
+    if (Blockly.Names.equals(oldName, this.getFieldValue('VAR'))) {
+      this.setFieldValue(newName, 'VAR');
+    }
+  }
+};
+

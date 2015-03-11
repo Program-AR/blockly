@@ -243,7 +243,10 @@ Blockly.Procedures.getCallers = function(name, workspace) {
  * @return {!Array.<!Blockly.Block>} Array of get_param blocks.
  */
 Blockly.Procedures.getParamCalls = function(name, workspace) {
-  var blocks = workspace.getAllBlocks().filter(function(b) { return b.type === 'param_get' && (!b.parentBlock_ || b.isFromDef(name)); });
+  var blocks = workspace.getAllBlocks().filter(function(b) {
+    return b.type === 'param_get' &&
+            (!b.parentBlock_ || b.isFromDef(name));
+  });
   return blocks;
 };
 
