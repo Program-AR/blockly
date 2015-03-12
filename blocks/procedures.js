@@ -471,6 +471,7 @@ Blockly.Blocks['procedures_defreturn'] = {
   renameVar: Blockly.Blocks['procedures_defnoreturn'].renameVar,
   customContextMenu: Blockly.Blocks['procedures_defnoreturn'].customContextMenu,
   generateCallerOption: Blockly.Blocks['procedures_defnoreturn'].generateCallerOption,
+  generateLocalVarOption: Blockly.Blocks['procedures_defnoreturn'].generateLocalVarOption,
   generateGetParamOption: Blockly.Blocks['procedures_defnoreturn'].generateGetParamOption,
   getParameterSvg: Blockly.Blocks['procedures_defnoreturn'].getParameterSvg,
   getCallSvg: function() {
