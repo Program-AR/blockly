@@ -27,6 +27,7 @@
 goog.provide('Blockly.Blocks.procedures');
 
 goog.require('Blockly.Blocks');
+goog.require('Blockly.Variables');
 goog.require('Blockly.utils');
 
 // HUE VALUE BY DEFAULT
@@ -348,20 +349,24 @@ Blockly.Blocks['procedures_defnoreturn'] = {
   },
 
   generateLocalVarOption: function(options) {
-    var option = {enabled: true};
-    var name = 'v';
-                  // this.contextMenuMsg_.replace('%1', name);
-    option.text = Blockly.getBlockSvg(this.workspace, 'local_var_set',
-      function(b) {
-        b.setFieldValue(name, 'VAR');
-        b.moveBy(10, 5);
-      });
-    var xmlField = goog.dom.createDom('field', null, name);
-    xmlField.setAttribute('name', 'VAR');
-    var xmlBlock = goog.dom.createDom('block', null, xmlField);
-    xmlBlock.setAttribute('type', 'local_var_set');
-    option.callback = Blockly.ContextMenu.callbackFactory(this, xmlBlock);
-    options.push(option);
+    var localVars = Blockly.Variables.allVariables(this, 'local');
+    if(localVars.length === 0) {
+      localVars[0] = 'v';
+    }
+    localVars.forEach(function(v) {
+      var option = {enabled: true};
+      var name = v;
+      option.text = Blockly.getBlockSvg(this.workspace, 'local_var_set',
+        function(b) {
+          b.setFieldValue(name, 'VAR');
+        });
+      var xmlField = goog.dom.createDom('field', null, name);
+      xmlField.setAttribute('name', 'VAR');
+      var xmlBlock = goog.dom.createDom('block', null, xmlField);
+      xmlBlock.setAttribute('type', 'local_var_set');
+      option.callback = Blockly.ContextMenu.callbackFactory(this, xmlBlock);
+      options.push(option);
+    }.bind(this));
   },
 
   generateCallerOption: function(options) {

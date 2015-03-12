@@ -176,9 +176,11 @@ Blockly.Blocks['local_var_get'] = {
    * @param {string} newName Renamed param.
    * @this Blockly.Block
    */
-  renameVar: function(oldName, newName) {
-    if (Blockly.Names.equals(oldName, this.getFieldValue('VAR'))) {
-      this.setFieldValue(newName, 'VAR');
+  renameVar: function(oldName, newName, defName) {
+    if(this.isFromDef(defName)) {
+      if (Blockly.Names.equals(oldName, this.getName())) {
+        this.setName(newName);
+      }
     }
   }
 };
@@ -203,6 +205,23 @@ Blockly.Blocks['local_var_set'] = {
     // TODO: set tooltip
     // this.setTooltip(Blockly.Msg.PARAM_GET_TOOLTIP);
   },
+
+  customContextMenu: function(options) {
+    var option = {enabled: true};
+    var name = this.getName();
+    option.text = Blockly.getBlockSvg(this.workspace, 'local_var_get',
+      function(b) {
+        b.setFieldValue(name, 'VAR');
+        b.moveBy(10, 5);
+      });
+    var xmlField = goog.dom.createDom('field', null, name);
+    xmlField.setAttribute('name', 'VAR');
+    var xmlBlock = goog.dom.createDom('block', null, xmlField);
+    xmlBlock.setAttribute('type', 'local_var_get');
+    option.callback = Blockly.ContextMenu.callbackFactory(this, xmlBlock);
+    options.push(option);
+  },
+
   /**
    * Return all variables referenced by this block.
    * @return {!Array.<string>} List of variable names.
@@ -227,9 +246,11 @@ Blockly.Blocks['local_var_set'] = {
    * @param {string} newName Renamed param.
    * @this Blockly.Block
    */
-  renameVar: function(oldName, newName) {
-    if (Blockly.Names.equals(oldName, this.getFieldValue('VAR'))) {
-      this.setFieldValue(newName, 'VAR');
+  renameVar: function(oldName, newName, defName) {
+    if(this.isFromDef(defName)) {
+      if (Blockly.Names.equals(oldName, this.getName())) {
+        this.setName(newName);
+      }
     }
   }
 };
