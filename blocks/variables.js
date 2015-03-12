@@ -50,6 +50,11 @@ Blockly.Blocks['variables_get'] = {
     this.contextMenuMsg_ = Blockly.Msg.VARIABLES_GET_CREATE_SET;
     this.contextMenuType_ = 'variables_set';
   },
+
+  getVarType: function() {
+    return 'global';
+  },
+
   /**
    * Return all variables referenced by this block.
    * @return {!Array.<string>} List of variable names.
@@ -114,6 +119,11 @@ Blockly.Blocks['variables_set'] = {
     this.contextMenuMsg_ = Blockly.Msg.VARIABLES_SET_CREATE_GET;
     this.contextMenuType_ = 'variables_get';
   },
+
+  getVarType: function() {
+    return 'global';
+  },
+
   /**
    * Return all variables referenced by this block.
    * @return {!Array.<string>} List of variable names.
@@ -152,6 +162,11 @@ Blockly.Blocks['local_var_get'] = {
     // TODO: set tooltip
     // this.setTooltip(Blockly.Msg.PARAM_GET_TOOLTIP);
   },
+
+  getVarType: function() {
+    return 'local';
+  },
+
   /**
    * Return all variables referenced by this block.
    * @return {!Array.<string>} List of variable names.
@@ -204,6 +219,10 @@ Blockly.Blocks['local_var_set'] = {
     this.setNextStatement(true);
     // TODO: set tooltip
     // this.setTooltip(Blockly.Msg.PARAM_GET_TOOLTIP);
+  },
+
+  getVarType: function() {
+    return 'local';
   },
 
   customContextMenu: function(options) {

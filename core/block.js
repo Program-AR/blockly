@@ -1202,3 +1202,14 @@ Blockly.Block.prototype.isFromAnyDef = function () {
   }
   return false;
 };
+
+Blockly.Block.prototype.defBlock = function () {
+  var p = this.parentBlock_;
+  while(p) {
+   if(p.type === 'procedures_defnoreturn' || p.type === 'procedures_defreturn') {
+    return p;
+   }
+   p = p.parentBlock_;
+  }
+  return undefined;
+};

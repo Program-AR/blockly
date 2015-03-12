@@ -37,20 +37,6 @@ goog.require('goog.string');
  */
 Blockly.Variables.NAME_TYPE = 'VARIABLE';
 
-Blockly.Variables.blocksForType = function(varType) {
-  if(varType === 'global') {
-    return ['variables_set', 'variables_get'];
-  } else if (varType === 'local') {
-    return ['local_var_set', 'local_var_get'];
-  } else {
-    return [];
-  }
-};
-
-Blockly.Variables.isOfVarType = function(block, varType) {
-  return Blockly.Variables.blocksForType(varType).indexOf(block.type) > -1;
-};
-
 /**
  * Find all user-created variables.
  * @param {!Blockly.Block|!Blockly.Workspace} root Root block or workspace.
@@ -70,16 +56,13 @@ Blockly.Variables.allVariables = function(root, varType) {
   var variableHash = Object.create(null);
   // Iterate through every block and add each variable to the hash.
   for (var x = 0; x < blocks.length; x++) {
-    if(Blockly.Variables.isOfVarType(blocks[x], varType)) {
-      var func = blocks[x].getVars;
-      if (func) {
-        var blockVariables = func.call(blocks[x]);
-        for (var y = 0; y < blockVariables.length; y++) {
-          var varName = blockVariables[y];
-          // Variable name may be null if the block is only half-built.
-          if (varName) {
-            variableHash[varName.toLowerCase()] = varName;
-          }
+    if(blocks[x].getVarType && blocks[x].getVarType() === varType) {
+      var blockVariables = blocks[x].getVars();
+      for (var y = 0; y < blockVariables.length; y++) {
+        var varName = blockVariables[y];
+        // Variable name may be null if the block is only half-built.
+        if (varName) {
+          variableHash[varName.toLowerCase()] = varName;
         }
       }
     }
@@ -124,7 +107,7 @@ Blockly.Variables.flyoutCategory = function(blocks, gaps, margin, workspace) {
   // variable name at the top.  We also don't want this duplicated if the
   // user has created a variable of the same name.
   variableList.unshift(null);
-  var defaultVariable = undefined;
+  var defaultVariable;
   for (var i = 0; i < variableList.length; i++) {
     if (variableList[i] === defaultVariable) {
       continue;
@@ -159,8 +142,13 @@ Blockly.Variables.flyoutCategory = function(blocks, gaps, margin, workspace) {
  * @param {!Blockly.Workspace} workspace The workspace to be unique in.
 * @return {string} New variable name.
 */
-Blockly.Variables.generateUniqueName = function(workspace, varType) {
-  var variableList = Blockly.Variables.allVariables(workspace, varType);
+Blockly.Variables.generateUniqueName = function(workspace, opt_block_def) {
+  var variableList = Blockly.Variables.allVariables(workspace, 'global');
+
+  if(opt_block_def) {
+    variableList = Blockly.Variables.allVariables(opt_block_def, 'local');
+  }
+
   var newName = '';
   if (variableList.length) {
     var nameSuffix = 1;

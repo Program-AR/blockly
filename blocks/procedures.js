@@ -351,7 +351,7 @@ Blockly.Blocks['procedures_defnoreturn'] = {
   generateLocalVarOption: function(options) {
     var localVars = Blockly.Variables.allVariables(this, 'local');
     if(localVars.length === 0) {
-      localVars[0] = 'v';
+      localVars[0] = 'local';
     }
     localVars.forEach(function(v) {
       var option = {enabled: true};
