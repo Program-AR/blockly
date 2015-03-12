@@ -341,9 +341,7 @@ Blockly.Blocks['procedures_defnoreturn'] = {
 
     // Add options to create getters for each parameter.
     if (!this.isCollapsed()) {
-      for (var i = 0; i < this.arguments_.length; i++) {
-        this.generateGetParamOption(options, i);
-      }
+        this.generateGetParamOption(options);
     }
 
     this.generateLocalVarOption(options);
@@ -387,16 +385,18 @@ Blockly.Blocks['procedures_defnoreturn'] = {
     options.push(option);
   },
 
-  generateGetParamOption: function(options, i) {
-    var option = {enabled: true};
-    var name = this.arguments_[i];
-    option.text = this.getParameterSvg(name);
-    var xmlField = goog.dom.createDom('field', null, name);
-    xmlField.setAttribute('name', 'VAR');
-    var xmlBlock = goog.dom.createDom('block', null, xmlField);
-    xmlBlock.setAttribute('type', 'param_get');
-    option.callback = Blockly.ContextMenu.callbackFactory(this, xmlBlock);
-    options.push(option);
+  generateGetParamOption: function(options) {
+    for (var i = 0; i < this.arguments_.length; i++) {
+      var option = {enabled: true};
+      var name = this.arguments_[i];
+      option.text = this.getParameterSvg(name);
+      var xmlField = goog.dom.createDom('field', null, name);
+      xmlField.setAttribute('name', 'VAR');
+      var xmlBlock = goog.dom.createDom('block', null, xmlField);
+      xmlBlock.setAttribute('type', 'param_get');
+      option.callback = Blockly.ContextMenu.callbackFactory(this, xmlBlock);
+      options.push(option);
+    }
   },
 
   getParameterSvg: function(name) {
@@ -867,7 +867,7 @@ Blockly.Blocks['param_get'] = {
     // this.setHelpUrl(Blockly.Msg.PARAM_GET_HELPURL);
     this.setColour(Blockly.Blocks.procedures.params.COLOUR);
     this.appendDummyInput()
-        .appendField('null', 'VAR')
+        .appendField('null', 'VAR');
     this.setOutput(true);
     this.getField_('VAR').EDITABLE = true; // to save field in XML
     // TODO: set tooltip
