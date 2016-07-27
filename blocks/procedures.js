@@ -343,7 +343,9 @@ Blockly.Blocks['procedures_defnoreturn'] = {
         this.generateGetParamOption(options);
     }
 
-    this.generateLocalVarOption(options);
+    if (this.shouldShowLocalVarOption){
+      this.generateLocalVarOption(options);
+    }
   },
 
   generateLocalVarOption: function(options) {
